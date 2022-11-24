@@ -57,6 +57,17 @@ resource "ibm_resource_instance" "portworx" {
   ]
 }
 
+resource "null_resource" "portworx_configure_max_storage_node_per_zone" {
+  triggers = {
+    condition = timestamp()
+  }
+  provisioner "local-exec" {
+    working_dir = "${path.module}/utils/"
+    command     = "/bin/bash portworx_configure_max_storage_node_per_zone.sh ${var.cloud_drive_options.max_storage_node_per_zone} ${local.px_cluster_name} ${var.namespace}"
+    on_failure  = fail
+  }
+}
+
 resource "null_resource" "portworx_upgrade" {
   triggers = {
     condition = timestamp()
