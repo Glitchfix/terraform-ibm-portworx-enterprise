@@ -11,6 +11,11 @@ variable "cluster_name" {
   nullable    = false
 }
 
+variable "px_cluster_name" {
+  description = "Name of existing portworx cluster"
+  type        = string
+  nullable    = false
+}
 variable "resource_group" {
   description = "Resource group of existing IKS Cluster "
   type        = string
