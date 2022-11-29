@@ -24,7 +24,6 @@ JSON=0
 # Check the Helm Chart Summary
 printf "[INFO] Kube Config Path: $CONFIGPATH"
 export KUBECONFIG=$CONFIGPATH
-export KUBECONFIG=~/gs/vault/pwx_vm/kubeconfig.dev
 kubectl config current-context
 
 CMD="helm"
