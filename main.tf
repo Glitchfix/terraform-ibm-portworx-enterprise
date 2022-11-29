@@ -80,3 +80,25 @@ resource "null_resource" "portworx_destroy" {
     on_failure  = fail
   }
 }
+
+resource "null_resource" "portworx_migrate" {
+  triggers = {
+    condition = timestamp()
+  }
+  provisioner "local-exec" {
+    working_dir = "${path.module}/utils/"
+    command     = "/bin/bash portworx_migrate.sh ${local.px_cluster_name} ${var.namespace}"
+    on_failure  = fail
+  }
+}
+
+resource "null_resource" "portworx_install_autopilot" {
+  triggers = {
+    condition = timestamp()
+  }
+  provisioner "local-exec" {
+    working_dir = "${path.module}/utils/"
+    command     = "/bin/bash portworx_install_autopilot.sh ${var.namespace} ${local.px_cluster_name} ${var.prometheus_url}"
+    on_failure  = fail
+  }
+}

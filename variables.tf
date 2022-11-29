@@ -5,6 +5,18 @@ variable "ibmcloud_api_key" {
   nullable    = false
 }
 
+variable "migrate_to_operator" {
+  description = "migrate portworx from daemonset to operator"
+  type        = bool
+  default     = false
+}
+
+variable "install_autopilot" {
+  description = "install portworx autopilot"
+  type        = bool
+  default     = false
+}
+
 variable "cluster_name" {
   description = "Name of existing IKS cluster"
   type        = string
@@ -126,6 +138,12 @@ variable "tags" {
   type        = list(string)
   description = "Optional Tags to be add, if required."
   default     = []
+}
+
+variable "prometheus_url" {
+  description = "Prometheus URL required for portworx autopilot. defaults to http://prometheus:9091"
+  type        = string
+  default     = "http://prometheus:9091"
 }
 
 variable "cloud_drive_options" {
