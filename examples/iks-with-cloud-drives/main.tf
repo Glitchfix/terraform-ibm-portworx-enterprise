@@ -6,6 +6,7 @@ module "portworx_enterprise" {
 
   # IKS Cluster Configuration
   cluster_name   = var.iks_cluster_name
+  px_cluster_name   = var.px_cluster_name
   resource_group = var.resource_group
   classic_infra  = var.classic_infra
 
