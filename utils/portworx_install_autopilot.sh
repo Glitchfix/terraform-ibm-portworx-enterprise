@@ -81,6 +81,17 @@ if [ "$PROMETHEUS_URL_LINE_NO" != "" ]; then
     FIND_AND_REPLACE="${PROMETHEUS_URL_LINE_NO}s/.*/${REPLACED_LINE}/"
     sed -i -e "${FIND_AND_REPLACE}" $AUTOPILOT_SPEC
 fi
+printf "[INFO] setting up icr.io\n"
+ICR_URL="image: icr.io/ext/portworx/autopilot:"
+ICR_URL_LINE_NO=$(grep -n 'image: portworx/autopilot:' ${AUTOPILOT_SPEC} | cut -d ':' -f1)
+if [ "$ICR_URL_LINE_NO" != "" ]; then
+    ICR_URL_LINE=$(grep 'image: portworx/autopilot:' ${AUTOPILOT_SPEC})
+    REPLACED_LINE=${ICR_URL_LINE//image\: portworx\/autopilot\:/$ICR_URL}
+    REPLACED_LINE=${REPLACED_LINE//\//\\\/}
+    REPLACED_LINE=${REPLACED_LINE//\:/\\\:}
+    FIND_AND_REPLACE="${ICR_URL_LINE_NO}s/.*/${REPLACED_LINE}/"
+    sed -i -e "${FIND_AND_REPLACE}" $AUTOPILOT_SPEC
+fi
 printf "[INFO] apply autopilot yaml\n"
 kubectl -n $NAMESPACE apply -f $AUTOPILOT_SPEC
 

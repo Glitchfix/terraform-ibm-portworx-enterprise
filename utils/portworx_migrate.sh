@@ -73,6 +73,8 @@ printf "[INFO] Installing new Helm Charts...\n"
 $CMD repo add ibm-helm https://raw.githubusercontent.com/portworx/ibm-helm/master/repo/stable
 $CMD repo update
 $CMD get values portworx -n ${NAMESPACE} > $HELM_VALUES_FILE
+kubectl -n $NAMESPACE apply -f "https://raw.githubusercontent.com/portworx/ibm-helm/master/chart/portworx/crds/core_v1_storagecluster_crd.yaml"
+kubectl -n $NAMESPACE apply -f "https://raw.githubusercontent.com/portworx/ibm-helm/master/chart/portworx/crds/core_v1_storagenode_crd.yaml"
 printf "[INFO] Upgrading ${HELM_VALUES_FILE}!!\n"
 $CMD upgrade portworx ibm-helm/portworx -f ${HELM_VALUES_FILE} -n ${NAMESPACE}
 
