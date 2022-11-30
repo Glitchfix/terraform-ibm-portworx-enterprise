@@ -42,7 +42,7 @@ variable "etcd_options" {
     external_etcd_connection_url = null
   }
   validation {
-    condition     = (var.etcd_options.use_external_etcd && (var.etcd_options.external_etcd_connection_url != null) && (var.etcd_options.etcd_secret_name != null)) || (!var.etcd_options.use_external_etcd && (var.etcd_options.external_etcd_connection_url == null) && (var.etcd_options.etcd_secret_name == null))
+    condition     = (var.etcd_options.use_external_etcd && (var.etcd_options.external_etcd_connection_url != null) && (var.etcd_options.etcd_secret_name != null)) || (!var.etcd_options.use_external_etcd && (((var.etcd_options.external_etcd_connection_url == null) && (var.etcd_options.etcd_secret_name == null)) || (var.etcd_options.external_etcd_connection_url == "") && (var.etcd_options.etcd_secret_name == "")))
     error_message = "The value of `etcd_secret_name` and `external_etcd_connection_url` should be set when `use_external_etcd` is set to `true`"
   }
 }
