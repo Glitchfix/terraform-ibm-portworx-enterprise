@@ -83,6 +83,12 @@ if [ "$ADVOPT_LINE_NO" != "" ]; then
     REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
     FIND_AND_REPLACE="${ADVOPT_LINE_NO}s/advOpts.*/${REPLACED_LINE}/"
     sed -i -e "${FIND_AND_REPLACE}" ${HELM_VALUES_FILE}
+
+    ADVOPT_LENGTH=$(grep "advOpts: " ${HELM_VALUES_FILE} | awk "{print length}")
+    if [ "$ADVOPT_LENGTH" == "9" ]; then
+        FIND_AND_REPLACE="${ADVOPT_LINE_NO}s/.*//"
+        sed -i -e "${FIND_AND_REPLACE}" ${HELM_VALUES_FILE}
+    fi
 else
     printf "[INFO] advOpts not found in ${HELM_VALUES_FILE}: lno_val:${ADVOPT_LINE_NO}\n"
 fi
