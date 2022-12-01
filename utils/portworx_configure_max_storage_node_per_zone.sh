@@ -77,10 +77,12 @@ $CMD get values portworx -n ${NAMESPACE} > $HELM_VALUES_FILE
 ADVOPT_LINE_NO=$(grep -n 'advOpts' ${HELM_VALUES_FILE} | cut -d ':' -f1)
 if [ "$ADVOPT_LINE_NO" != "" ]; then
     ADVOPT_LINE=$(grep 'advOpts' ${HELM_VALUES_FILE})
-    REPLACED_LINE=${ADVOPT_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
-    REPLACED_LINE=${REPLACED_LINE/ ,/ }
-    FIND_AND_REPLACE="${ADVOPT_LINE_NO}s/.*/${REPLACED_LINE}/"
-    sed -i -e ${FIND_AND_REPLACE} ${HELM_VALUES_FILE}
+    REPLACED_LINE=${ADVOPT_LINE//,-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]],/,}
+    REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]],/}
+    REPLACED_LINE=${REPLACED_LINE//,-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
+    REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
+    FIND_AND_REPLACE="${ADVOPT_LINE_NO}s/advOpts.*/${REPLACED_LINE}/"
+    sed -i -e "${FIND_AND_REPLACE}" ${HELM_VALUES_FILE}
 else
     printf "[INFO] advOpts not found in ${HELM_VALUES_FILE}: lno_val:${ADVOPT_LINE_NO}\n"
 fi
