@@ -71,7 +71,7 @@ fi
 HELM_VALUES_FILE=/tmp/values.yaml
 
 printf "[INFO] Installing new Helm Charts...\n"
-$CMD repo add ibm-helm https://raw.githubusercontent.com/portworx/ibm-helm/master/repo/stable
+$CMD repo add ibm-helm https://raw.githubusercontent.com/portworx/ibm-helm/master/repo/stable --force-update
 $CMD repo update
 $CMD get values portworx -n ${NAMESPACE} > $HELM_VALUES_FILE
 ADVOPT_LINE_NO=$(grep -n 'advOpts' ${HELM_VALUES_FILE} | cut -d ':' -f1)
