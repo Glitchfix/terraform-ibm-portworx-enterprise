@@ -69,7 +69,7 @@ fi
 # Trigger the helm upgrade
 
 HELM_VALUES_FILE=/tmp/values.yaml
-HELM_VALUES_FILE=/Users/schakravorty/gs/terraform-ibm-portworx-enterprise/helm-values.yaml
+
 printf "[INFO] Installing new Helm Charts...\n"
 $CMD repo add ibm-helm https://raw.githubusercontent.com/portworx/ibm-helm/master/repo/stable
 $CMD repo update
