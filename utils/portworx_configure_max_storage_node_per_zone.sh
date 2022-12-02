@@ -134,3 +134,6 @@ if [ "$RETRIES" -gt "$LIMIT" ]; then
     printf "[ERROR] All Retries Exhausted!\n"
     exit 1
 fi
+
+printf "[INFO] max storage node configuration completed\n"
+exit 0
