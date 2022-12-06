@@ -81,6 +81,11 @@ if [ "$ADVOPT_LINE_NO" != "" ]; then
     REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]],/}
     REPLACED_LINE=${REPLACED_LINE//,-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
     REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
+
+    REPLACED_LINE=${REPLACED_LINE//;-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]];/;}
+    REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]];/}
+    REPLACED_LINE=${REPLACED_LINE//;-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
+    REPLACED_LINE=${REPLACED_LINE//-max_storage_nodes_per_zone=[[:digit:]|[:digit:][:digit:]|[:digit:][:digit:][:digit:]]/}
     FIND_AND_REPLACE="${ADVOPT_LINE_NO}s/advOpts.*/${REPLACED_LINE}/"
     sed -i -e "${FIND_AND_REPLACE}" ${HELM_VALUES_FILE}
 
