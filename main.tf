@@ -70,7 +70,7 @@ resource "null_resource" "portworx_configure_max_storage_node_per_zone" {
 
 resource "null_resource" "portworx_upgrade" {
   triggers = {
-    condition = timestamp()
+    condition = var.upgrade_portworx
   }
   provisioner "local-exec" {
     working_dir = "${path.module}/utils/"
