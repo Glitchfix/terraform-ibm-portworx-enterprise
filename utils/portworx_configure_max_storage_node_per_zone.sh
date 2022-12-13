@@ -47,6 +47,23 @@ else
     printf "$HEADER*\t\t\t\tHelm Chart Summary\t\t\t*$DIVIDER\n$JSON$DIVIDER"
 fi
 
+LIMIT=20
+RETRIES=0
+sleep $SLEEP_TIME
+while [ "$RETRIES" -le "$LIMIT" ]
+do
+    GREP_NS=$(kubectl get ns | grep $NAMESPACE | awk '{print $1}')
+    if [ "$NAMESPACE" == "$GREP_NS" ]; then
+        printf "[INFO] namespace found \n"
+        break
+    else
+        printf "[ERROR] failed namespace not found yet\n"
+        printf "[INFO] Will retry in $SLEEP_TIME secs\n"
+        ((RETRIES++))
+        sleep $SLEEP_TIME
+    fi
+done
+
 # Check if portworx ds is there, if there,  get the ds details else, exit with error
 # Store the number of desired and ready pods
 # Show the current pods and ds status
