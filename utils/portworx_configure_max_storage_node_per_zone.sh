@@ -36,8 +36,11 @@ if [ "$VERSION" == "" ]; then
     CMD="/tmp/helm3/linux-amd64/helm"
     $CMD version
 fi
+
+# Get the portworx chart namespace
+CHART_NAMESPACE=$(helm ls -A | grep portworx | awk '{print $2}')
 # Get the Helm status
-if ! JSON=$(helm history portworx -n ${NAMESPACE} -o json | jq '. | last'); then
+if ! JSON=$(helm history portworx -n ${CHART_NAMESPACE} -o json | jq '. | last'); then
     printf "[ERROR] Helm couldn't find Portworx Installation, will not proceed with the upgrade!! Please install portworx and then try to upgrade.\n"
     exit 1
 else
@@ -73,7 +76,7 @@ HELM_VALUES_FILE=/tmp/values.yaml
 printf "[INFO] Installing new Helm Charts...\n"
 $CMD repo add ibm-helm https://raw.githubusercontent.com/portworx/ibm-helm/master/repo/stable --force-update
 $CMD repo update
-$CMD get values portworx -n ${NAMESPACE} > $HELM_VALUES_FILE
+$CMD get values portworx -n ${CHART_NAMESPACE} > $HELM_VALUES_FILE
 ADVOPT_LINE_NO=$(grep -n 'advOpts' ${HELM_VALUES_FILE} | cut -d ':' -f1)
 if [ "$ADVOPT_LINE_NO" != "" ]; then
     ADVOPT_LINE=$(grep 'advOpts' ${HELM_VALUES_FILE})
@@ -106,7 +109,7 @@ fi
 echo "maxStorageNodesPerZone: ${NODE_COUNT}" >> $HELM_VALUES_FILE
 printf "[INFO] maxStorageNodesPerZone value updated in ${HELM_VALUES_FILE}!!\n"
 printf "[INFO] Upgrading ${HELM_VALUES_FILE}!!\n"
-$CMD upgrade portworx ibm-helm/portworx -f ${HELM_VALUES_FILE} -n ${NAMESPACE}
+$CMD upgrade portworx ibm-helm/portworx -f ${HELM_VALUES_FILE} -n ${CHART_NAMESPACE}
 
 if [[ $? -eq 0 ]]; then
     printf "[INFO] Upgrade Triggered Succesfully, will monitor the storage cluster!!\n"
@@ -122,7 +125,7 @@ sleep $SLEEP_TIME
 UPDATED_COUNT="maxStorageNodesPerZone: ${NODE_COUNT}"
 while [ "$RETRIES" -le "$LIMIT" ]
 do
-    $CMD get values portworx -n ${NAMESPACE} > ${HELM_VALUES_FILE}
+    $CMD get values portworx -n ${CHART_NAMESPACE} > ${HELM_VALUES_FILE}
     UPDATED_VAL=$(grep maxStorageNodesPerZone ${HELM_VALUES_FILE})
     printf "compare ${UPDATED_VAL} == ${UPDATED_COUNT}\n"
     if [ "$UPDATED_VAL" == "$UPDATED_COUNT" ]; then
