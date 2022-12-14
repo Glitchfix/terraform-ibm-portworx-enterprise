@@ -66,6 +66,10 @@ resource "null_resource" "portworx_configure_max_storage_node_per_zone" {
     command     = "/bin/bash portworx_configure_max_storage_node_per_zone.sh ${self.triggers.max_storage_node_per_zone} ${local.px_cluster_name} ${var.namespace}"
     on_failure  = fail
   }
+
+  depends_on = [
+    ibm_resource_instance.portworx
+  ]
 }
 
 resource "null_resource" "portworx_upgrade" {
@@ -77,6 +81,21 @@ resource "null_resource" "portworx_upgrade" {
     command     = "/bin/bash portworx_upgrade.sh ${var.portworx_version} ${var.upgrade_portworx} ${local.px_cluster_name} ${var.namespace}"
     on_failure  = fail
   }
+}
+
+resource "null_resource" "portworx_install_autopilot" {
+  triggers = {
+    condition = var.install_autopilot
+  }
+  provisioner "local-exec" {
+    working_dir = "${path.module}/utils/"
+    command     = "/bin/bash portworx_install_autopilot.sh ${var.namespace} ${local.px_cluster_name} ${var.prometheus_url}"
+    on_failure  = fail
+  }
+
+  depends_on = [
+    ibm_resource_instance.portworx
+  ]
 }
 
 resource "null_resource" "portworx_destroy" {

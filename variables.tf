@@ -169,3 +169,15 @@ variable "cloud_drive_options" {
     error_message = "The value of `storage_classes` should be a list of strings\nAvailable Options: ibmc-vpc-block-10iops-tier\nibmc-vpc-block-5iops-tier\nibmc-vpc-block-general-purpose\nibmc-vpc-block-retain-10iops-tier\nibmc-vpc-block-retain-5iops-tier\nibmc-vpc-block-retain-general-purpose"
   }
 }
+
+variable "install_autopilot" {
+  description = "install portworx autopilot"
+  type        = bool
+  default     = false
+}
+
+variable "prometheus_url" {
+  description = "Prometheus URL required for portworx autopilot. defaults to http://prometheus:9091"
+  type        = string
+  default     = "http://prometheus:9091"
+}
