@@ -26,6 +26,7 @@ module "portworx_enterprise" {
   secret_type           = var.secret_type
   delete_strategy       = var.delete_strategy
   namespace             = var.namespace
+  install_autopilot = var.install_autopilot
 
   # Cloud Drives Configuration
   use_cloud_drives = var.use_cloud_drives

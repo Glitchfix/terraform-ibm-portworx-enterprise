@@ -129,3 +129,9 @@ variable "namespace" {
   type        = string
   default     = "kube-system"
 }
+
+variable "install_autopilot" {
+  description = "install portworx autopilot"
+  type        = bool
+  default     = false
+}
